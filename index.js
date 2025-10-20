@@ -6,16 +6,18 @@ import OpenAI from "openai";
 const TELEGRAM_TOKEN = process.env.TELEGRAM_TOKEN;
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
+// Check if environment variables are set
 if (!TELEGRAM_TOKEN || !OPENAI_API_KEY) {
   console.error("❌ Missing environment variables!");
   process.exit(1);
 }
 
+// Initialize the Telegram bot
 const bot = new TelegramBot(8159632728:AAG6EVtkelaIRYPSbQT8QeGtvNwbJhbyM_c, { polling: true });
 const openai = new OpenAI({ apiKey: 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 });
 const app = express();
 
-// Simple keep-alive endpoint
+// Keep-alive web server for Render
 app.get("/", (req, res) => {
   res.send("⚡ Athena is online in the Grid...");
 });
@@ -23,7 +25,7 @@ app.get("/", (req, res) => {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`🌐 Keep-alive server running on port ${PORT}`));
 
-// Telegram message handler
+// Telegram message listener
 bot.on("message", async (msg) => {
   const chatId = msg.chat.id;
   const userText = msg.text;
@@ -50,3 +52,5 @@ bot.on("message", async (msg) => {
     bot.sendMessage(chatId, "⚠️ The signal flickers... I can’t respond right now.");
   }
 });
+
+console.log("⚡ Athena is now awake in the Grid...");
