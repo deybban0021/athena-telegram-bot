@@ -1,6 +1,8 @@
+import express from "express";
 import TelegramBot from "node-telegram-bot-api";
 import OpenAI from "openai";
 
+// Environment variables
 const TELEGRAM_TOKEN = process.env.TELEGRAM_TOKEN;
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
@@ -11,14 +13,21 @@ if (!TELEGRAM_TOKEN || !OPENAI_API_KEY) {
 
 const bot = new TelegramBot(8159632728:AAG6EVtkelaIRYPSbQT8QeGtvNwbJhbyM_c, { polling: true });
 const openai = new OpenAI({ apiKey: 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 });
+const app = express();
 
-console.log("⚡ Athena is now awake in the Grid...");
+// Simple keep-alive endpoint
+app.get("/", (req, res) => {
+  res.send("⚡ Athena is online in the Grid...");
+});
 
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`🌐 Keep-alive server running on port ${PORT}`));
+
+// Telegram message handler
 bot.on("message", async (msg) => {
   const chatId = msg.chat.id;
   const userText = msg.text;
 
-  // typing animation
   bot.sendChatAction(chatId, "typing");
 
   try {
